@@ -1,5 +1,5 @@
 define( [
-	"../../var/pnum"
+	"~/themes/var/pnum"
 ], function( pnum ) {
 	"use strict";
 

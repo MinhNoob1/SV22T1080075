@@ -1,5 +1,5 @@
 define( [
-	"../../core"
+	"~/themes/core"
 ], function( jQuery ) {
 
 "use strict";

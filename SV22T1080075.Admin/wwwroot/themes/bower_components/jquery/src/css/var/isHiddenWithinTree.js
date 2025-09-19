@@ -1,6 +1,6 @@
 define( [
-	"../../core",
-	"../../selector"
+	"~/themes/core",
+	"~/themes/selector"
 
 	// css is assumed
 ], function( jQuery ) {
