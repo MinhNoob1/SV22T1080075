@@ -1811,6 +1811,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Category\Index.cshtml" />
+    <None Include="Views\Customer\Create.cshtml" />
+    <None Include="Views\Customer\Edit.cshtml" />
+    <None Include="Views\Customer\Index.cshtml" />
+    <None Include="Views\Employee\Index.cshtml" />
+    <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Home\Privacy.cshtml" />
+    <None Include="Views\Order\Create.cshtml" />
+    <None Include="Views\Order\Index.cshtml" />
+    <None Include="Views\Product\Index.cshtml" />
+    <None Include="Views\Shipper\Index.cshtml" />
+    <None Include="Views\Supplier\Index.cshtml" />
     <None Include="wwwroot\themes\bower_components\bootstrap-colorpicker\dist\css\bootstrap-colorpicker.css.map" />
     <None Include="wwwroot\themes\bower_components\bootstrap-colorpicker\dist\css\bootstrap-colorpicker.min.css.map" />
     <None Include="wwwroot\themes\bower_components\bootstrap-colorpicker\dist\js\bootstrap-colorpicker.js" />
@@ -6078,6 +6090,10 @@
     <None Include="wwwroot\themes\bower_components\select2\src\scss\_dropdown.scss" />
     <None Include="wwwroot\themes\bower_components\select2\src\scss\_multiple.scss" />
     <None Include="wwwroot\themes\bower_components\select2\src\scss\_single.scss" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\products\" />
   </ItemGroup>
 
 </Project>

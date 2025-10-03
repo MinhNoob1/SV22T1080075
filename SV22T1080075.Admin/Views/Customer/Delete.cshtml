@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "Xóa khách hàng";
+}
+<div class="box box-danger">
+    <div class="box-body">
+        <form action="~/Customer/Delete" method="post">
+
+            <div class="form-group">
+                <label>Tên khách hàng:</label>
+                <p class="form-control-static">Trần Nguyên Phong</p>
+            </div>
+
+            <div class="form-group">
+                <label>Tên giao dịch:</label>
+                <p class="form-control-static">Phong đẹp trai</p>
+            </div>
+
+            <div class="form-group">
+                <label>Điện thoại:</label>
+                <p class="form-control-static">0935254782</p>
+            </div>
+
+            <div class="form-group">
+                <label>Email:</label>
+                <p class="form-control-static">tnphong@gmail.com</p>
+            </div>
+
+            <div class="form-group">
+                <label>Địa chỉ:</label>
+                <p class="form-control-static">77 Nguyễn Huệ</p>
+            </div>
+
+            <div class="form-group">
+                <label>Tỉnh/thành:</label>
+                <p class="form-control-static">Thừa Thiên Huế</p>
+            </div>
+
+            <div class="form-group">
+                <label>Trạng thái:</label>
+                <p class="form-control-static">Khách hàng không bị khóa</p>
+            </div>
+
+            <div class="form-group text-right">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fa fa-trash"></i>
+                    Xóa dữ liệu
+                </button>
+                <a href="~/Customer" class="btn btn-default">
+                    Quay lại
+                </a>
+            </div>
+
+        </form>
+    </div>
+</div>
