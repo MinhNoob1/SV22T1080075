@@ -1,4 +1,5 @@
-﻿@{    
+﻿@model IEnumerable<SV22T1080075.DomainModels.Customer>
+@{    
     ViewBag.Title = "Quản lý khách hàng";
 }
 <div class="box box-primary">
@@ -44,15 +45,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for (int i = 1; i <= 10; i++)
+                    @foreach (var item in Model)
                     {
                         <tr>
-                            <td>Trần Nguyên Phong</td>
-                            <td>Ông Phong</td>
-                            <td>0935254782</td>
-                            <td>tnphong@gmail.com</td>
-                            <td>77 Nguyễn Huệ</td>
-                            <td>Thừa Thiên Huế</td>
+                            <td>@item.CustomerName</td>
+                            <td>@item.ContantName</td>
+                            <td>@item.Phone</td>
+                            <td>@item.Email</td>
+                            <td>@item.Andress</td>
+                            <td>@item.Province</td>
                             <td></td>
                             <td class="text-right">
                                 <a href="~/Customer/Edit/123" class="btn btn-xs btn-info">

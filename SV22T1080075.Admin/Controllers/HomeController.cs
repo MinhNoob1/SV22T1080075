@@ -1,32 +1,26 @@
 using Microsoft.AspNetCore.Mvc;
 using SV22T1080075.Admin.Models;
+using SV22T1080075.DataLayers;
 using System.Diagnostics;
 
 namespace SV22T1080075.Admin.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
         public IActionResult Index()
         {
             return View();
         }
-
-        public IActionResult Privacy()
+        public async Task<IActionResult> Test()
         {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            string connectionString = "Server=LAB505-05;" +
+                                      "Database=LiteCommerce;" +
+                                      "Trusted_Connection=True;" +
+                                      "MultipleActiveResultSets=true;" +
+                                      "TrustServerCertificate=true";
+            var dal = new CustomerDAL(connectionString);
+            var data = await dal.ListAsync();
+            return Json(data.ToList());
         }
     }
 }
