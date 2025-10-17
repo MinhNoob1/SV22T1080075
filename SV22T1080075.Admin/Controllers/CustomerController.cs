@@ -7,7 +7,7 @@ namespace SV22T1080075.Admin.Controllers
     {
         public async Task<IActionResult> Index()
         {
-            string connectionString = "Server=LAB505-05;" +
+            string connectionString = "Server=localhost;" +
                                       "Database=LiteCommerce;" +
                                       "Trusted_Connection=True;" +
                                       "MultipleActiveResultSets=true;" +
