@@ -14,7 +14,7 @@ namespace SV22T1080075.DomainModels
         /// <summary>
         /// Mã khách hàng
         /// </summary>
-        public int CustomerId { get; set; }
+        public int CustomerID { get; set; }
         /// <summary>
         /// Tên khách hàng
         /// </summary>
@@ -22,7 +22,7 @@ namespace SV22T1080075.DomainModels
         /// <summary>
         /// Tên giao dịch
         /// </summary>
-        public string ContantName { get; set; } = "";
+        public string ContactName { get; set; } = "";
         /// <summary>
         /// Tỉnh/thành
         /// </summary>
@@ -30,7 +30,7 @@ namespace SV22T1080075.DomainModels
         /// <summary>
         /// Địa chỉ khách hàng
         /// </summary>
-        public string Andress { get; set; } = "";
+        public string Address { get; set; } = "";
         /// <summary>
         /// Số điện thoại
         /// </summary>

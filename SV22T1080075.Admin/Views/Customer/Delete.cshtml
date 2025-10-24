@@ -1,55 +1,64 @@
-﻿@{
+﻿@model Customer
+@{
     ViewBag.Title = "Xóa khách hàng";
 }
 <div class="box box-danger">
     <div class="box-body">
-        <form action="~/Customer/Delete" method="post">
+        <form action="~/Customer/Delete/@Model.CustomerID" method="post">
 
             <div class="form-group">
                 <label>Tên khách hàng:</label>
-                <p class="form-control-static">Trần Nguyên Phong</p>
+                <p class="form-control-static">@Model.CustomerName</p>
             </div>
 
             <div class="form-group">
                 <label>Tên giao dịch:</label>
-                <p class="form-control-static">Phong đẹp trai</p>
+                <p class="form-control-static">@Model.ContactName</p>
             </div>
 
             <div class="form-group">
                 <label>Điện thoại:</label>
-                <p class="form-control-static">0935254782</p>
+                <p class="form-control-static">@Model.Phone</p>
             </div>
 
             <div class="form-group">
                 <label>Email:</label>
-                <p class="form-control-static">tnphong@gmail.com</p>
+                <p class="form-control-static">@Model.Phone</p>
             </div>
 
             <div class="form-group">
                 <label>Địa chỉ:</label>
-                <p class="form-control-static">77 Nguyễn Huệ</p>
+                <p class="form-control-static">@Model.Address</p>
             </div>
 
             <div class="form-group">
                 <label>Tỉnh/thành:</label>
-                <p class="form-control-static">Thừa Thiên Huế</p>
+                <p class="form-control-static">@Model.Province</p>
             </div>
 
             <div class="form-group">
                 <label>Trạng thái:</label>
-                <p class="form-control-static">Khách hàng không bị khóa</p>
+                <p class="form-control-static">@(Model.IsLocked ? "Khách hàng đang bị khóa tài khoản" : "Khách hàng đang hoạt động")</p>
             </div>
 
             <div class="form-group text-right">
+                @if (!(await SV22T1080075.BusinessLayers.CommonDataServices.CustomerDB.InUsedAsync(Model.CustomerID)))
+                {
                 <button type="submit" class="btn btn-danger">
                     <i class="fa fa-trash"></i>
                     Xóa dữ liệu
                 </button>
+                }
+                else
+                {
+                    <div class="alert alert-danger">
+                        <strong>Cảnh báo:</strong> Khách hàng này đã có đơn hàng. Bạn không thể xóa dữ liệu khách hàng này.
+                    </div>
+                }
                 <a href="~/Customer" class="btn btn-default">
                     Quay lại
                 </a>
             </div>
-
         </form>
     </div>
 </div>

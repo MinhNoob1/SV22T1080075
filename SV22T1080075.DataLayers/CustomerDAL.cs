@@ -61,17 +61,17 @@ namespace SV22T1080075.DataLayers
         /// </summary>
         /// <param name="seachValue"></param>
         /// <returns></returns>
-        public async Task<int> CountAsync(string seachValue = "")
+        public async Task<int> CountAsync(string searchValue = "")
         {
-            seachValue = $"%{seachValue}%";
+            searchValue = $"%{searchValue}%";
             using (var connection = await OpenConnectionAsync())
             {
                 var sql = @"
                             SELECT COUNT(*) FROM Customers
                             WHERE CustomerName LIKE @searchValue OR ContactName LIKE @searchValue
                             ";
-                var parameters = new {seachValue = seachValue};
-                return await connection.ExecuteScalarAsync<int>(sql:sql, param: parameters, commandType: CommandType.Text);
+                var parameters = new { searchValue = searchValue };
+                return await connection.ExecuteScalarAsync<int>(sql: sql, param: parameters, commandType: CommandType.Text);
             }
         }
         /// <summary>
@@ -85,7 +85,7 @@ namespace SV22T1080075.DataLayers
             {
                 var sql = @"SELECT * FROM Customers WHERE CustomerID = @id";
                 var parameters = new { id = id };
-                return await connection.QueryFirstOrDefaultAsync<Customer>(sql:sql, param: parameters, commandType:CommandType.Text);
+                return await connection.QueryFirstOrDefaultAsync<Customer>(sql: sql, param: parameters, commandType: CommandType.Text);
             }
         }
         /// <summary>
@@ -95,7 +95,7 @@ namespace SV22T1080075.DataLayers
         /// <returns></returns>
         public async Task<int> AddAsync(Customer data)
         {
-            using(var connection = await OpenConnectionAsync())
+            using (var connection = await OpenConnectionAsync())
             {
                 var sql = @"
                             INSERT INTO Customers 
@@ -120,8 +120,7 @@ namespace SV22T1080075.DataLayers
                             );
                             SELECT SCOPE_IDENTITY();
                             ";
-                var parameters = new { data };
-                return await connection.ExecuteScalarAsync<int>(sql: sql, param: parameters, commandType: CommandType.Text);
+                return await connection.ExecuteScalarAsync<int>(sql: sql, param: data, commandType: CommandType.Text);
             }
         }
         /// <summary>
@@ -145,8 +144,7 @@ namespace SV22T1080075.DataLayers
 		                            IsLocked = @IsLocked
 	                            WHERE CustomerID = @CustomerID;
                             ";
-                var parameters = new { data };
-                return await connection.ExecuteAsync(sql: sql, param: parameters, commandType:CommandType.Text) > 0;
+                return await connection.ExecuteAsync(sql: sql, param: data, commandType: CommandType.Text) > 0;
             }
         }
         /// <summary>
@@ -158,9 +156,9 @@ namespace SV22T1080075.DataLayers
         {
             using (var connection = await OpenConnectionAsync())
             {
-                var sql = @"DELECT FROM Customers WHERE CustomerID = @id";
+                var sql = @"DELETE FROM Customers WHERE CustomerID = @id";
                 var parameters = new { id };
-                return await connection.ExecuteAsync(sql: sql, parameters, commandType:CommandType.Text) > 0;
+                return await connection.ExecuteAsync(sql: sql, parameters, commandType: CommandType.Text) > 0;
             }
         }
         /// <summary>
@@ -168,16 +166,14 @@ namespace SV22T1080075.DataLayers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<bool> InUsed(int id)
+        public async Task<bool> InUsedAsync(int id)
         {
             using (var connection = await OpenConnectionAsync())
             {
-                var sql = @"
-                        IF EXISTS(SELECT 1 FROM Orders WHERE CustomerID = @id)
-                            SELECT 1
-                        ELSE
-                            SELECT 0;
-                        ";
+                var sql = @"IF EXISTS (SELECT 1 FROM Orders WHERE CustomerID = @id)
+                        SELECT 1
+                    ELSE
+                        SELECT 0";
                 var parameters = new { id };
                 return await connection.ExecuteScalarAsync<bool>(sql: sql, param: parameters, commandType: CommandType.Text);
             };
