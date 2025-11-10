@@ -18,6 +18,7 @@ namespace SV22T1080075.BusinessLayers
         private static readonly ShipperDAL shipperDB;
         private static readonly EmployeeDAL employeeDB;
         private static readonly CategoryDAL categoryDB;
+        private static readonly ProductDAL productDB;
         /// <summary>
         /// Ctor
         /// (Câu hỏi: )
@@ -31,6 +32,7 @@ namespace SV22T1080075.BusinessLayers
             shipperDB = new ShipperDAL(connectionString);
             employeeDB = new EmployeeDAL(connectionString);
             categoryDB = new CategoryDAL(connectionString);
+            productDB = new ProductDAL(connectionString);
         }
         /// <summary>
         /// Dữ liệu tỉnh thành
@@ -56,5 +58,6 @@ namespace SV22T1080075.BusinessLayers
         /// Dữ liệu loại hàng
         /// </summary>
         public static CategoryDAL CategoryDB => categoryDB;
+        public static ProductDAL ProductDB => productDB;
     }
 }

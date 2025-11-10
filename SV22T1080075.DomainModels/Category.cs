@@ -14,7 +14,8 @@ namespace SV22T1080075.DomainModels
         /// <summary>
         /// Mã loại hàng
         /// </summary>
-        public int CategoryId { get; set; }
+        public int CategoryID { get; set; }
+
         /// <summary>
         /// Tên loại hàng
         /// </summary>

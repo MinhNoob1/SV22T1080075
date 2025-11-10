@@ -1,5 +1,5 @@
 ﻿@model PaginationSearchResult<Customer>
-@{    
+@{
     ViewBag.Title = "Quản lý khách hàng";
 }
 <div class="box box-primary">
@@ -7,15 +7,12 @@
         <!-- Form để nhập đầu vào tìm kiếm -->
         <form id="formSearch" action="~/Customer" method="get">
             <div class="input-group">
-
-                <input name="searchValue" 
-                        type="text"
-                        class="form-control"
-                        placeholder="Nhập tên khách hàng cần tìm"
-                        autofocus 
-                        value="@Model.SearchValue"
-                        />
-
+                <input name="searchValue"
+                       type="text"
+                       class="form-control"
+                       placeholder="Nhập tên khách hàng cần tìm"
+                       autofocus
+                       value="@Model.SearchValue" />
                 <div class="input-group-btn">
                     <button class="btn btn-info" type="submit">
                         <i class="fa fa-search"></i>
@@ -67,14 +64,14 @@
                                 </a>
                             </td>
                         </tr>
-                    }                    
+                    }
                 </tbody>
             </table>
         </div>
 
         <div class="text-center">
             <ul class="pagination">
-                @for (int p = 1;p <= Model.PageCount; p++)
+                @for (int p = 1; p <= Model.PageCount; p++)
                 {
                     if (p == Model.Page)
                     {
@@ -84,7 +81,7 @@
                     {
                         <li>
                             <a href="~/Customer?page=@p&searchValue=@Model.SearchValue">
-                                @p    
+                                @p
                             </a>
                         </li>
                     }

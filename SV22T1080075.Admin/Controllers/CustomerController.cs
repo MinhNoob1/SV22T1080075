@@ -30,15 +30,15 @@ namespace SV22T1080075.Admin.Controllers
             {
                 CustomerID = 0
             };
-            return View("Edit",model);
+            return View("Edit", model);
         }
-        public async Task<IActionResult> Edit(int id = 0) 
+        public async Task<IActionResult> Edit(int id = 0)
         {
             ViewBag.Title = "Cập nhật thông tin khách hàng";
             var model = await CommonDataServices.CustomerDB.GetAsync(id);
             if (model == null)
                 return RedirectToAction("Index");
-            return View(model);     
+            return View(model);
         }
         /// <summary>
         /// Lưu dữ liệu khách hàng
@@ -48,16 +48,43 @@ namespace SV22T1080075.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveData(Customer data)
         {
-            //TODO: Kiểm tra tính đúng đắn của dữ liệu đầu vào, kiểm soát lỗi
-            if (data.CustomerID == 0)
+            try
             {
-                await CommonDataServices.CustomerDB.AddAsync(data);
+                ViewBag.Title = data.CustomerID == 0 ? "Bổ sung khách hàng mới" : "Cập nhật thông tin khách hàng";
+
+                //Kiểm tra dữ liệu đầu vào
+                if (string.IsNullOrWhiteSpace(data.CustomerName))
+                    ModelState.AddModelError("CustomerName", "Tên khách hàng không được để trống");
+                if (string.IsNullOrWhiteSpace(data.ContactName))
+                    ModelState.AddModelError("ContactName", "Tên liên hệ không được để trống");
+                if (string.IsNullOrWhiteSpace(data.Phone))
+                    ModelState.AddModelError("Phone", "Điện thoại không được để trống");
+                if (string.IsNullOrWhiteSpace(data.Email))
+                    ModelState.AddModelError("Email", "Email không được để trống");
+                if (string.IsNullOrWhiteSpace(data.Address))
+                    ModelState.AddModelError("Address", "Địa chỉ không được để trống");
+                if (string.IsNullOrWhiteSpace(data.Province))
+                    ModelState.AddModelError("Province", "Tỉnh/Thành phố không được để trống");
+
+                //Thông báo lỗi và yêu cầu nhập lại nếu có trường hợp dữ liệu không hợp lệ
+                if (!ModelState.IsValid)
+                    return View("Edit", data);
+
+                if (data.CustomerID == 0)
+                {
+                    await CommonDataServices.CustomerDB.AddAsync(data);
+                }
+                else
+                {
+                    await CommonDataServices.CustomerDB.UpdateAsync(data);
+                }
+                return RedirectToAction("Index");
             }
-            else
+            catch (Exception ex)
             {
-                await CommonDataServices.CustomerDB.UpdateAsync(data);
+                ModelState.AddModelError("Error", ex.Message);
+                return View("Edit", data);
             }
-            return RedirectToAction("Index");
         }
         public async Task<IActionResult> Delete(int id = 0)
         {
@@ -66,7 +93,7 @@ namespace SV22T1080075.Admin.Controllers
                 await CommonDataServices.CustomerDB.DeleteAsync(id);
                 return RedirectToAction("Index");
             }
-            else 
+            else
             {
                 var model = await CommonDataServices.CustomerDB.GetAsync(id);
                 if (model == null)

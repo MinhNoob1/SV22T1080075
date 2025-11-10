@@ -14,7 +14,7 @@ namespace SV22T1080075.DomainModels
         /// <summary>
         /// Mã nhân viên
         /// </summary>
-        public int EmployeeId { get; set; }
+        public int EmployeeID { get; set; }
         /// <summary>
         /// Tên nhân viên
         /// </summary>
@@ -42,6 +42,6 @@ namespace SV22T1080075.DomainModels
         /// <summary>
         /// Có đang làm việc không
         /// </summary>
-        public int IsWorking { get; set; }
+        public bool IsWorking { get; set; }
     }
 }

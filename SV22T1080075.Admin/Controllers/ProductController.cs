@@ -1,12 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SV22T1080075.BusinessLayers;
+using System.Threading.Tasks;
 
 namespace SV22T1080075.Admin.Controllers
 {
     public class ProductController : Controller
     {
-        public IActionResult Index()
+        private const int PAGE_SIZE = 20;
+        public async Task<IActionResult> Index(int page = 1, string searchValue = "")
         {
-            return View();
+            var data = await CommonDataServices.ProductDB.ListAsync(page, PAGE_SIZE, searchValue);
+            var rowCount = await CommonDataServices.ProductDB.CountAsync(searchValue);
+            var model = new Models.PaginationSearchResult<DomainModels.Product>()
+            {
+                Page = page,
+                PageSize = PAGE_SIZE,
+                SearchValue = searchValue,
+                RowCount = rowCount,
+                Data = data
+            };
+            return View(model);
         }
         public IActionResult Attribute(int id = 0, string method = "", int photoId = 0)
         {
