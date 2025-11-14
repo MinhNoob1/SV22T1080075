@@ -29,6 +29,7 @@
         {
             get
             {
+                if (PageSize == 0) return 1;
                 if (RowCount <= 0) return 1;
                 int page = RowCount / PageSize;
                 if (RowCount % PageSize > 0) page += 1;

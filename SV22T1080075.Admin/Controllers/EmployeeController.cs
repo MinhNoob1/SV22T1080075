@@ -47,7 +47,7 @@ namespace SV22T1080075.Admin.Controllers
             var model = new EmployeeEditModel()
             {
                 EmployeeID = employee.EmployeeID,
-                EmployeeName = employee.EmployeeName,
+                FullName = employee.FullName,
                 BirthDate = employee.BirthDate,
                 Address = employee.Address,
                 Email = employee.Email,
@@ -62,8 +62,8 @@ namespace SV22T1080075.Admin.Controllers
         {
             //TODO: Kiểm tra dữ liệu đầu vào
             ViewBag.Title = model.EmployeeID == 0 ? "Bổ sung nhân viên" : "Cập nhật thông tin nhân viên";
-            if (string.IsNullOrWhiteSpace(model.EmployeeName))
-                ModelState.AddModelError("EmployeeName", "Tên nhân viên không được để trống");
+            if (string.IsNullOrWhiteSpace(model.FullName))
+                ModelState.AddModelError("FullName", "Tên nhân viên không được để trống");
             if (string.IsNullOrWhiteSpace(model.Phone))
                 ModelState.AddModelError("Phone", "Số điện thoại không được để trống");
             if (string.IsNullOrWhiteSpace(model.Address))
@@ -90,7 +90,7 @@ namespace SV22T1080075.Admin.Controllers
             Employee data = new Employee()
             {
                 EmployeeID = model.EmployeeID,
-                EmployeeName = model.EmployeeName,
+                FullName = model.FullName,
                 BirthDate = model.BirthDate,
                 Address = model.Address,
                 Email = model.Email,

@@ -1,82 +1,64 @@
-﻿@model PaginationSearchResult<Category>
+﻿@model PaginationSearchCondition
 @{
     ViewBag.Title = "Quản lý Loại hàng";
 }
 <div class="box box-primary">
     <div class="box-body">
         <!-- Form nhập đầu vào tìm kiếm -->
-        <form id="formSearch" action="~/Category">
+        <form id="formSearch" action="~/Category/Search" method="get" data-result="#searchValue">
             <div class="input-group">
-                <input name="searchValue"
-                       type="text"
+
+                <input hidden asp-for="PageSize" />
+
+                <input type="text"
                        class="form-control"
                        placeholder="Nhập tên khách hàng cần tìm"
-                       value="@Model.SearchValue">
+                       autofocus
+                       asp-for="SearchValue" />
+
                 <div class="input-group-btn">
                     <button class="btn btn-info" type="submit">
                         <i class="glyphicon glyphicon-search"></i>
                     </button>
+
                     <a href="~/Category/Create" class="btn btn-primary" style="margin-left:5px">
                         <i class="fa fa-plus"></i> Bổ sung
                     </a>
                 </div>
             </div>
         </form>
-
         <!-- Hiển thị kết quả tìm kiếm -->
-        <div>
-            <p style="margin:10px 0 10px 0">
-                Có <strong>@Model.RowCount</strong> loại hàng trong tổng số <strong>@Model.PageCount</strong> trang
-            </p>
-
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover table-striped">
-                    <thead>
-                        <tr class="bg-primary">
-                            <th>Tên loại hàng</th>
-                            <th>Mô tả</th>
-                            <th style="width:80px"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.Data)
-                        {
-                            <tr>
-                                <td>@item.CategoryName</td>
-                                <td>@item.Description</td>
-                                <td class="text-right">
-                                    <a href="~/Category/Edit/@item.CategoryID" class="btn btn-xs btn-info">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                    <a href="~/Category/Delete/@item.CategoryID" class="btn btn-xs btn-danger">
-                                        <i class="fa fa-remove"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="text-center">
-                <ul class="pagination">
-                    @for (int p = 1; p <= Model.PageCount; p++)
-                    {
-                        if (p == Model.Page)
-                        {
-                            <li class="active"><a href="#">@p</a></li>
-                        }
-                        else
-                        {
-                            <li>
-                                <a href="~/Category?page=@p&searchValue=@Model.SearchValue">
-                                    @p
-                                </a>
-                            </li>
-                        }
-                    }
-                </ul>
-            </div>
-        </div>
+        <div id="searchValue"></div>
     </div>
 </div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#formSearch").submit(function (e) {
+                e.preventDefault();
+                searchData(1);
+            });
+            searchData(@Model.Page);
+        })
+
+        //Gởi yêu cầu đến Search để lấy dữ liệu tại trang page, hiển thị dữ liệu vào #searchResult
+        function searchData(page) {
+
+            var url = $("#formSearch").prop("action");
+            var method = $("#formSeach").prop("method");
+            var container = $("#formSearch").data("result");
+            var submitData = $("#formSearch").serializeArray();
+            submitData.push({ "name": "page", "value": page });
+
+            $.ajax({
+                url: url,
+                method: method,
+                data: submitData,
+                success: function (data) {
+                    $(container).html(data);
+                }
+            });
+        }
+    </script>
+}

@@ -28,7 +28,7 @@ namespace SV22T1080075.DataLayers
         {
             if (page < 1) page = 1;
             if (pageSize < 0) pageSize = 0;
-            searchValue = $"%{searchValue.ToLower()}%";
+            searchValue = $"%{searchValue}%";
 
             using (var connection = await OpenConnectionAsync())
             {

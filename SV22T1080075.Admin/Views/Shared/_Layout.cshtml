@@ -18,7 +18,7 @@
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="~/themes/dist/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="~/css/site.css">
-    @await RenderSectionAsync("styles",false);
+    @await RenderSectionAsync("styles", false);
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
     <![endif]-->
     <!-- Google Font -->
     @*
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     *@
 </head>
 <body class="hold-transition fixed skin-blue sidebar-mini">
@@ -60,10 +60,9 @@
             await Html.RenderPartialAsync("_Footer");
         }
         <!-- Control Sidebar -->
-
         <!-- /.control-sidebar -->
         <!-- Add the sidebar's background. This div must be placed
-    immediately after the control sidebar -->
+        immediately after the control sidebar -->
         <div class="control-sidebar-bg"></div>
     </div>
     <!-- ./wrapper -->
@@ -84,6 +83,6 @@
             $('.sidebar-menu').tree()
         })
     </script>
-    @await RenderSectionAsync("scripts",false);
+    @await RenderSectionAsync("scripts", false);
 </body>
 </html>

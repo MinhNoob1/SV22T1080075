@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SV22T1080075.Admin.Models;
 using SV22T1080075.BusinessLayers;
 using SV22T1080075.DomainModels;
+using System.Buffers;
 using System.Threading.Tasks;
 
 namespace SV22T1080075.Admin.Controllers
@@ -8,18 +10,38 @@ namespace SV22T1080075.Admin.Controllers
     public class CategoryController : Controller
     {
         private const int PAGE_SIZE = 10;
-        public async Task<IActionResult> Index(int page = 1, string searchValue = "")
+        private const string CATEGORY_SEARCH_CONDITION = "CategorySearchCondition";
+        public IActionResult Index()
         {
-            var data = await CommonDataServices.CategoryDB.ListAsync(page, PAGE_SIZE, searchValue);
-            var rowCount = await CommonDataServices.CategoryDB.CountAsync(searchValue);
-            var model = new Models.PaginationSearchResult<Category>()
+            // Nếu trong session có lưu điều kiện tìm kiếm thì sử dụng lại điều kiện đó,
+            // Ngược lại, thì tạo điều kiện tìm kiếm mặc định
+            var conditon = ApplicationContext.GetSessionData<PaginationSearchCondition>(CATEGORY_SEARCH_CONDITION);
+            if (conditon == null)
             {
-                Page = page,
-                PageSize = PAGE_SIZE,
-                SearchValue = searchValue,
+                conditon = new PaginationSearchCondition()
+                {
+                    Page = 1,
+                    PageSize = PAGE_SIZE,
+                    SearchValue = ""
+                };
+            }
+            return View(conditon);
+        }
+
+        public async Task<IActionResult> Search(PaginationSearchCondition condition)
+        {
+            var data = await CommonDataServices.CategoryDB.ListAsync(condition.Page, condition.PageSize, condition.SearchValue);
+            var rowCount = await CommonDataServices.CategoryDB.CountAsync(condition.SearchValue);
+            var model = new PaginationSearchResult<Category>()
+            {
+                Page = condition.Page,
+                PageSize = condition.PageSize,
+                SearchValue = condition.SearchValue,
                 RowCount = rowCount,
                 Data = data
             };
+            // Lưu lại điều kiện tìm kiếm vào trong session
+            ApplicationContext.SetSessionData(CATEGORY_SEARCH_CONDITION, condition);
             return View(model);
         }
         public IActionResult Create()

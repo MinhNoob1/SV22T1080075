@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SV22T1080075.Admin.Models;
 using SV22T1080075.BusinessLayers;
 using SV22T1080075.DataLayers;
 using SV22T1080075.DomainModels;
+using System.Buffers;
 using System.Threading.Tasks;
 
 namespace SV22T1080075.Admin.Controllers
@@ -9,20 +11,41 @@ namespace SV22T1080075.Admin.Controllers
     public class CustomerController : Controller
     {
         private const int PAGE_SIZE = 20;
-        public async Task<IActionResult> Index(int page = 1, string searchValue = "")
+        private const string CUSTOMER_SEARCH_CONDITION = "CustomerSearchCondition";
+        public IActionResult Index()
         {
-            var data = await CommonDataServices.CustomerDB.ListAsync(page, PAGE_SIZE, searchValue);
-            var rowCount = await CommonDataServices.CustomerDB.CountAsync(searchValue);
-            var model = new Models.PaginationSearchResult<Customer>()
+            // Nếu trong session có lưu điều kiện tìm kiếm thì sử dụng lại điều kiện đó,
+            // Ngược lại, thì tạo điều kiện tìm kiếm mặc định
+            var conditon = ApplicationContext.GetSessionData<PaginationSearchCondition>(CUSTOMER_SEARCH_CONDITION);
+            if (conditon == null)
             {
-                Page = page,
-                PageSize = PAGE_SIZE,
-                SearchValue = searchValue,
+                conditon = new PaginationSearchCondition()
+                {
+                    Page = 1,
+                    PageSize = PAGE_SIZE,
+                    SearchValue = ""
+                };
+            }
+            return View(conditon);
+        }
+
+        public async Task<IActionResult> Search(PaginationSearchCondition condition)
+        {
+            var data = await CommonDataServices.CustomerDB.ListAsync(condition.Page, condition.PageSize, condition.SearchValue);
+            var rowCount = await CommonDataServices.CustomerDB.CountAsync(condition.SearchValue);
+            var model = new PaginationSearchResult<Customer>()
+            {
+                Page = condition.Page,
+                PageSize = condition.PageSize,
+                SearchValue = condition.SearchValue,
                 RowCount = rowCount,
                 Data = data
             };
+            // Lưu lại điều kiện tìm kiếm vào trong session
+            ApplicationContext.SetSessionData(CUSTOMER_SEARCH_CONDITION, condition);
             return View(model);
         }
+
         public IActionResult Create()
         {
             ViewBag.Title = "Bổ sung khách hàng mới";

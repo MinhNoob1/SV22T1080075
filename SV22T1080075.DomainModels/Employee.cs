@@ -18,7 +18,7 @@ namespace SV22T1080075.DomainModels
         /// <summary>
         /// Tên nhân viên
         /// </summary>
-        public string EmployeeName { get; set; } = "";
+        public string FullName { get; set; } = "";
         /// <summary>
         /// Ngày sinh
         /// </summary>

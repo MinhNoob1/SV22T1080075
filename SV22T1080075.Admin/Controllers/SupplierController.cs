@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SV22T1080075.Admin.Models;
 using SV22T1080075.BusinessLayers;
 using SV22T1080075.DomainModels;
 using System.Threading.Tasks;
@@ -8,20 +9,40 @@ namespace SV22T1080075.Admin.Controllers
     public class SupplierController : Controller
     {
         private const int PAGE_SIZE = 10;
-        public async Task<IActionResult> Index(int page = 1, string searchValue ="")
+        private const string SUPPLIER_SEARCH_CONDITION = "SupplierSearchConditon";
+        public IActionResult Index()
         {
-            var data = await CommonDataServices.SupplierDB.ListAsync(page, PAGE_SIZE, searchValue);
-            var rowCount = await CommonDataServices.SupplierDB.CountAsync(searchValue);
+            // Nếu trong session có lưu điều kiện tìm kiếm thì sử dụng lại điều kiện đó,
+            // Ngược lại, thì tạo điều kiện tìm kiếm mặc định
+            var conditon = ApplicationContext.GetSessionData<PaginationSearchCondition>(SUPPLIER_SEARCH_CONDITION);
+            if (conditon == null)
+            {
+                conditon = new PaginationSearchCondition()
+                {
+                    Page = 1,
+                    PageSize = PAGE_SIZE,
+                    SearchValue = ""
+                };
+            }
+            return View(conditon);
+        }
+        public async Task<IActionResult> Search(PaginationSearchCondition condition)
+        {
+            var data = await CommonDataServices.SupplierDB.ListAsync(condition.Page, condition.PageSize, condition.SearchValue);
+            var rowCount = await CommonDataServices.SupplierDB.CountAsync(condition.SearchValue);
             var model = new Models.PaginationSearchResult<Supplier>()
             {
-                Page = page,
-                PageSize = PAGE_SIZE,
-                SearchValue = searchValue,
+                Page = condition.Page,
+                PageSize = condition.PageSize,
+                SearchValue = condition.SearchValue,
                 RowCount = rowCount,
                 Data = data
             };
+            // Lưu lại điều kiện tìm kiếm vào trong session
+            ApplicationContext.SetSessionData(SUPPLIER_SEARCH_CONDITION, condition);
             return View(model);
         }
+
         public IActionResult Create()
         {
             ViewBag.Title = "Bổ sung nhà cung cấp mới";

@@ -3,17 +3,22 @@ using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Thêm các dịch vụ vào container.
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews()
                 .AddMvcOptions(option =>
                 {
                     option.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
                 });
-
+builder.Services.AddSession(option =>
+{
+    option.IdleTimeout = TimeSpan.FromDays(7);
+    option.Cookie.HttpOnly = true;
+    option.Cookie.IsEssential = true;
+});
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Cấu hình chuỗi xử lý yêu cầu HTTP.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");

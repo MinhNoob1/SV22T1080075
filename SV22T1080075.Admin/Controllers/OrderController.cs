@@ -7,9 +7,8 @@ namespace SV22T1080075.Admin.Controllers
     public class OrderController : Controller
     {
         private const int PAGE_SIZE = 20;
-        public async Task<IActionResult> Index(int page = 1, string searchValue = "")
+        public IActionResult Index(int page = 1, string searchValue = "")
         {
-            var data = await CommonDataServices.OrderDB
             return View();
         }
 
