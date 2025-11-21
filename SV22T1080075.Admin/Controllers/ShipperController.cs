@@ -26,11 +26,12 @@ namespace SV22T1080075.Admin.Controllers
             }
             return View(conditon);
         }
-        public async Task<IActionResult> Searh(PaginationSearchCondition condition)
+
+        public async Task<IActionResult> Search(PaginationSearchCondition condition)
         {
-            var data = await CommonDataServices.CustomerDB.ListAsync(condition.Page, condition.PageSize, condition.SearchValue);
-            var rowCount = await CommonDataServices.CustomerDB.CountAsync(condition.SearchValue);
-            var model = new PaginationSearchResult<Customer>()
+            var data = await CommonDataServices.ShipperDB.ListAsync(condition.Page, condition.PageSize, condition.SearchValue);
+            var rowCount = await CommonDataServices.ShipperDB.CountAsync(condition.SearchValue);
+            var model = new PaginationSearchResult<Shipper>()
             {
                 Page = condition.Page,
                 PageSize = condition.PageSize,
@@ -42,6 +43,7 @@ namespace SV22T1080075.Admin.Controllers
             ApplicationContext.SetSessionData(SHIPPER_SEARCH_CONDITION, condition);
             return View(model);
         }
+        
         public IActionResult Create()
         {
             ViewBag.Title = "Bổ sung người giao hàng mới";

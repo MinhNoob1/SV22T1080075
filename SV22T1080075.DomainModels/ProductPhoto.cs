@@ -7,24 +7,24 @@ using System.Threading.Tasks;
 namespace SV22T1080075.DomainModels
 {
     /// <summary>
-    /// Ảnh mặt hàng
+    /// Ảnh của mặt hàng
     /// </summary>
     public class ProductPhoto
     {
         /// <summary>
-        /// Mã hình ảnh
+        /// Mã ảnh
         /// </summary>
-        public int PhotoId { get; set; }
+        public long PhotoID { get; set; }
         /// <summary>
-        ///  Mã mặt hàng
+        /// Mã mặt hàng
         /// </summary>
         public int ProductID { get; set; }
         /// <summary>
-        /// File hình ảnh
+        /// Tên file ảnh
         /// </summary>
         public string Photo { get; set; } = "";
         /// <summary>
-        /// Mô tả
+        /// Mô tả/thuyết minh ảnh
         /// </summary>
         public string Description { get; set; } = "";
         /// <summary>
@@ -32,9 +32,8 @@ namespace SV22T1080075.DomainModels
         /// </summary>
         public int DisplayOrder { get; set; }
         /// <summary>
-        /// Có hiện hình ảnh sản phẩm?
+        /// Ảnh có bị ẩn hay không?
         /// </summary>
-        public bool isHidden { get; set; }
-
+        public bool IsHidden { get; set; }
     }
 }

@@ -14,37 +14,37 @@ namespace SV22T1080075.DomainModels
         /// <summary>
         /// Mã mặt hàng
         /// </summary>
-        public int ProductId { get; set; }
+        public int ProductID { get; set; }
         /// <summary>
         /// Tên mặt hàng
         /// </summary>
         public string ProductName { get; set; } = "";
         /// <summary>
-        /// Mô tả mặt hàng
+        /// Mô tả thông tin về mặt hàng
         /// </summary>
         public string ProductDescription { get; set; } = "";
         /// <summary>
         /// Mã nhà cung cấp
         /// </summary>
-        public int SupplierId { get; set; }
+        public int SupplierID { get; set; }
         /// <summary>
         /// Mã loại hàng
         /// </summary>
         public int CategoryID { get; set; }
         /// <summary>
-        /// Đơn vị
+        /// Đơn vị tính
         /// </summary>
         public string Unit { get; set; } = "";
         /// <summary>
-        /// Giá thành mặt hàng
+        /// Giá mặt hàng
         /// </summary>
         public decimal Price { get; set; }
         /// <summary>
-        /// Hình ảnh mặt hàng
+        /// Tên file ảnh
         /// </summary>
         public string Photo { get; set; } = "";
         /// <summary>
-        /// Sản phẩm có đang bán không?
+        /// Mặt hàng có đang được bán hay không?
         /// </summary>
         public bool IsSelling { get; set; }
     }

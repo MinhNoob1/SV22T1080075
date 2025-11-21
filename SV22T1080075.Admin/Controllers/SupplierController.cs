@@ -26,11 +26,12 @@ namespace SV22T1080075.Admin.Controllers
             }
             return View(conditon);
         }
+
         public async Task<IActionResult> Search(PaginationSearchCondition condition)
         {
             var data = await CommonDataServices.SupplierDB.ListAsync(condition.Page, condition.PageSize, condition.SearchValue);
             var rowCount = await CommonDataServices.SupplierDB.CountAsync(condition.SearchValue);
-            var model = new Models.PaginationSearchResult<Supplier>()
+            var model = new PaginationSearchResult<Supplier>()
             {
                 Page = condition.Page,
                 PageSize = condition.PageSize,

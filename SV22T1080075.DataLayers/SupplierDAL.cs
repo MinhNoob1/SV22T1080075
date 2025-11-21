@@ -24,7 +24,6 @@ namespace SV22T1080075.DataLayers
         /// <param name="page">Trang cần hiển thị</param>
         /// <param name="pageSize">Số dòng trên mỗi trang (nếu = 0 thì lấy toàn bộ)</param>
         /// <param name="searchValue">Tên nhà cung cấp hoặc người liên hệ cần tìm (rỗng nếu lấy tất cả)</param>
-        /// <returns></returns>
         public async Task<IEnumerable<Supplier>> ListAsync(int page = 1, int pageSize = 0, string searchValue = "")
         {
             if (page < 1) page = 1;

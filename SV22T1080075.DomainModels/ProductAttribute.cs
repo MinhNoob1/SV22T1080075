@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 namespace SV22T1080075.DomainModels
 {
     /// <summary>
-    /// Thuộc tính mặt hàng
+    /// Thuộc tính của mặt hàng
     /// </summary>
     public class ProductAttribute
     {
         /// <summary>
         /// Mã thuộc tính
         /// </summary>
-        public int AttributeID { get; set; }
+        public long AttributeID { get; set; }
         /// <summary>
         /// Mã mặt hàng
         /// </summary>
@@ -30,6 +30,6 @@ namespace SV22T1080075.DomainModels
         /// <summary>
         /// Thứ tự hiển thị
         /// </summary>
-        public int DisplayOrder {  get; set; }
+        public int DisplayOrder { get; set; }
     }
 }

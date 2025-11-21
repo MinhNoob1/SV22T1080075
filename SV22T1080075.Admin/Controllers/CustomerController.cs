@@ -74,7 +74,6 @@ namespace SV22T1080075.Admin.Controllers
             try
             {
                 ViewBag.Title = data.CustomerID == 0 ? "Bổ sung khách hàng mới" : "Cập nhật thông tin khách hàng";
-
                 //Kiểm tra dữ liệu đầu vào
                 if (string.IsNullOrWhiteSpace(data.CustomerName))
                     ModelState.AddModelError("CustomerName", "Tên khách hàng không được để trống");
