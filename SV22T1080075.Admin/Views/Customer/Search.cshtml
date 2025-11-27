@@ -18,7 +18,7 @@
                     <th>Địa chỉ</th>
                     <th>Tỉnh/thành</th>
                     <th>Bị khóa?</th>
-                    <th style="width:80px"></th>
+                    <th style="width:80px">Thay đổi</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,7 +32,6 @@
                         <td>@item.Address</td>
                         <td>@item.Province</td>
                         <td>@(item.IsLocked ? "x" : "")</td>
-                        <td></td>
                         <td class="text-right">
                             <a href="~/Customer/Edit/@item.CustomerID" class="btn btn-xs btn-info">
                                 <i class="fa fa-edit"></i>

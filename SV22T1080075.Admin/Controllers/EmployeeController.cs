@@ -9,41 +9,65 @@ namespace SV22T1080075.Admin.Controllers
 {
     public class EmployeeController : Controller
     {
-        const int PAGESIZE = 12;
-
-        public async Task<IActionResult> Index(int page = 1, string searchValue = "")
+        private const string EMPLOYEE_SEARCH_CONDITION = "EmployeeSearchCondition";
+        private const int PAGESIZE = 15;
+        /// <summary>
+        /// Hiển thị form tìm kiếm và danh sách nhân viên
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Index()
         {
-            var data = await CommonDataServices.EmployeeDB.ListAsync(page, PAGESIZE, searchValue);
-            var rowCount = await CommonDataServices.EmployeeDB.CountAsync(searchValue);
+            PaginationSearchCondition condition = ApplicationContext.GetSessionData<PaginationSearchCondition>(EMPLOYEE_SEARCH_CONDITION)
+                ?? new PaginationSearchCondition()
+                {
+                    Page = 1,
+                    PageSize = PAGESIZE,
+                    SearchValue = ""
+                };
+
+            return View(condition);
+        }
+        /// <summary>
+        /// Lấy dữ liệu danh sách nhân viên
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> Search(PaginationSearchCondition condition)
+        {
+            var data = await CommonDataServices.EmployeeDB.ListAsync(
+                condition.Page, condition.PageSize, condition.SearchValue);
+
+            var rowCount = await CommonDataServices.EmployeeDB.CountAsync(condition.SearchValue);
+
             var model = new PaginationSearchResult<Employee>()
             {
-                Page = page,
-                PageSize = PAGESIZE,
-                SearchValue = searchValue,
+                Page = condition.Page,
+                PageSize = condition.PageSize,
+                SearchValue = condition.SearchValue,
                 RowCount = rowCount,
                 Data = data
             };
+
+            ApplicationContext.SetSessionData(EMPLOYEE_SEARCH_CONDITION, condition);
+
             return View(model);
         }
-
         public IActionResult Create()
         {
             ViewBag.Title = "Bổ sung nhân viên";
-            var model = new EmployeeEditModel()
+
+            return View("Edit", new EmployeeEditModel()
             {
                 EmployeeID = 0,
                 Photo = "nophoto.png"
-            };
-            return View("Edit", model);
+            });
         }
 
-        public async Task<IActionResult> Edit(int id = 0)
+        public async Task<IActionResult> Edit(int id)
         {
             ViewBag.Title = "Cập nhật thông tin nhân viên";
             var employee = await CommonDataServices.EmployeeDB.GetAsync(id);
             if (employee == null)
                 return RedirectToAction("Index");
-
             var model = new EmployeeEditModel()
             {
                 EmployeeID = employee.EmployeeID,
@@ -79,11 +103,16 @@ namespace SV22T1080075.Admin.Controllers
             if (model.UpLoadFile != null)
             {
                 string fileName = $"{DateTime.Now.Ticks}_{model.UpLoadFile.FileName}";
-                string filePath = Path.Combine(ApplicationContext.WWWRootPath, @"images\employees", fileName);
+                string filePath = Path.Combine(
+                    ApplicationContext.WWWRootPath,
+                    @"images\employees",
+                    fileName);
+
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await model.UpLoadFile.CopyToAsync(stream);
                 }
+
                 model.Photo = fileName;
             }
 

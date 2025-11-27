@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SV22T1080075.Admin.Models;
 using SV22T1080075.BusinessLayers;
 using SV22T1080075.DomainModels;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace SV22T1080075.Admin.Controllers
@@ -146,38 +148,59 @@ namespace SV22T1080075.Admin.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> Save(Product data)
+        public async Task<IActionResult> SaveData(ProductEditModel model)
         {
-            try
-            {
-                ViewBag.Title = data.ProductID == 0 ? "Bổ sung mặt hàng" : "Cập nhật mặt hàng";
-                //Kiểm tra dữ liệu đầu vào
-                if (string.IsNullOrWhiteSpace(data.ProductName))
-                    ModelState.AddModelError("ProductName", "Tên mặt hàng không được để trống");
+            ViewBag.Title = model.ProductID == 0 ? "Bổ sung mặt hàng" : "Cập nhật mặt hàng";
 
-                //Thông báo lỗi và yêu cầu nhập lại nếu có trường hợp dữ liệu không hợp lệ
-                if (!ModelState.IsValid)
-                {
-                    return View("Edit", data);
-                }
+            // Validate
+            if (string.IsNullOrWhiteSpace(model.ProductName))
+                ModelState.AddModelError("ProductName", "Tên mặt hàng không được để trống");
 
-                if (data.ProductID == 0)
-                {
-                    await ProductDataService.ProductDB.AddAsync(data);
-                }
-                else
-                {
-                    await ProductDataService.ProductDB.UpdateAsync(data);
-                }
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
+            if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("Error", ex.Message);
-                return View("Edit", data);
+                // BẮT BUỘC load lại dropdown + dữ liệu phụ    
+                ViewBag.Categories = new SelectList(ProductDataService.ListCategories(), "CategoryID", "CategoryName");
+                ViewBag.Suppliers = new SelectList(ProductDataService.ListSuppliers(), "SupplierID", "SupplierName");
+                ViewBag.Photos = ProductDataService.ListPhotos(model.ProductID);
+                ViewBag.Attributes = ProductDataService.ListAttributes(model.ProductID);
+
+                return View("Edit", model);
             }
 
+            // Upload ảnh nếu có
+            if (model.UpLoadFile != null)
+            {
+                string fileName = $"{DateTime.Now.Ticks}_{model.UpLoadFile.FileName}";
+                string filePath = Path.Combine(ApplicationContext.WWWRootPath, @"images\products", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await model.UpLoadFile.CopyToAsync(stream);
+                }
+                model.Photo = fileName;
+            }
+
+            // Convert sang Product để lưu
+            Product data = new Product()
+            {
+                ProductID = model.ProductID,
+                ProductName = model.ProductName,
+                ProductDescription = model.ProductDescription,
+                SupplierID = model.SupplierID,
+                CategoryID = model.CategoryID,
+                Unit = model.Unit,
+                Price = model.Price,
+                Photo = model.Photo,
+                IsSelling = model.IsSelling
+            };
+
+            if (data.ProductID == 0)
+                await ProductDataService.ProductDB.AddAsync(data);
+            else
+                await ProductDataService.ProductDB.UpdateAsync(data);
+
+            return RedirectToAction("Index");
         }
+
         /// <summary>
         /// Cập nhật thông tin mặt hàng
         /// </summary>
@@ -185,12 +208,33 @@ namespace SV22T1080075.Admin.Controllers
         /// <returns></returns>
         public async Task<IActionResult> Edit(int id)
         {
-            var data = await ProductDataService.ProductDB.GetAsync(id);
-            if (data == null)
+            var product = await ProductDataService.ProductDB.GetAsync(id);
+            if (product == null)
                 return RedirectToAction("Index");
 
-            ViewBag.Title = "Cập nhật mặt hàng";
-            return View(data);
+            // Tạo model Edit từ Product
+            var model = new ProductEditModel()
+            {
+                ProductID = product.ProductID,
+                ProductName = product.ProductName,
+                ProductDescription = product.ProductDescription,
+                SupplierID = product.SupplierID,
+                CategoryID = product.CategoryID,
+                Unit = product.Unit,
+                Price = product.Price,
+                Photo = product.Photo,
+                IsSelling = product.IsSelling
+            };
+
+            // Dropdown
+            ViewBag.Categories = new SelectList(ProductDataService.ListCategories(), "CategoryID", "CategoryName");
+            ViewBag.Suppliers = new SelectList(ProductDataService.ListSuppliers(), "SupplierID", "SupplierName");
+
+            // Ảnh + thuộc tính
+            ViewBag.Photos = ProductDataService.ListPhotos(id);
+            ViewBag.Attributes = ProductDataService.ListAttributes(id);
+
+            return View(model);
         }
         /// <summary>
         /// Xóa mặt hàng
