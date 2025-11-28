@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SV22T1080075.Admin.Models;
 using SV22T1080075.DataLayers;
@@ -5,6 +6,7 @@ using System.Diagnostics;
 
 namespace SV22T1080075.Admin.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         public IActionResult Index()

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SV22T1080075.Admin.Models;
 using SV22T1080075.BusinessLayers;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace SV22T1080075.Admin.Controllers
 {
+    [Authorize]
     public class ProductController : Controller
     {
         private const int PAGE_SIZE = 20;
@@ -74,11 +76,9 @@ namespace SV22T1080075.Admin.Controllers
         {
             if (id <= 0)
                 return RedirectToAction("Index");
-
             var product = await ProductDataService.ProductDB.GetAsync(id);
             if (product == null)
                 return RedirectToAction("Index");
-
             switch (method)
             {
                 case "add":
@@ -88,19 +88,15 @@ namespace SV22T1080075.Admin.Controllers
                         AttributeID = 0,
                         ProductID = id
                     });
-
                 case "edit":
                     var attribute = await ProductDataService.ProductDB.GetAttributeAsync(attributeId);
                     if (attribute == null)
                         return RedirectToAction("Edit", new { id = id });
-
                     ViewBag.Title = "Cập nhật thuộc tính mặt hàng";
                     return View("AttributeEdit", attribute);
-
                 case "delete":
                     await ProductDataService.ProductDB.DeleteAttributeAsync(attributeId);
                     return RedirectToAction("Edit", new { id = id });
-
                 default:
                     return RedirectToAction("Edit", new { id = id });
             }
@@ -116,11 +112,9 @@ namespace SV22T1080075.Admin.Controllers
         {
             if (id <= 0)
                 return RedirectToAction("Index");
-
             var product = await ProductDataService.ProductDB.GetAsync(id);
             if (product == null)
                 return RedirectToAction("Index");
-
             switch (method)
             {
                 case "add":
@@ -130,19 +124,15 @@ namespace SV22T1080075.Admin.Controllers
                         PhotoID = 0,
                         ProductID = id
                     });
-
                 case "edit":
                     var photo = await ProductDataService.ProductDB.GetPhotoAsync(photoId);
                     if (photo == null)
                         return RedirectToAction("Edit", new { id = id });
-
                     ViewBag.Title = "Cập nhật hình ảnh mặt hàng";
                     return View("PhotoEdit", photo);
-
                 case "delete":
                     await ProductDataService.ProductDB.DeletePhotoAsync(photoId);
                     return RedirectToAction("Edit", new { id = id });
-
                 default:
                     return RedirectToAction("Edit", new { id = id });
             }
@@ -151,11 +141,9 @@ namespace SV22T1080075.Admin.Controllers
         public async Task<IActionResult> SaveData(ProductEditModel model)
         {
             ViewBag.Title = model.ProductID == 0 ? "Bổ sung mặt hàng" : "Cập nhật mặt hàng";
-
             // Validate
             if (string.IsNullOrWhiteSpace(model.ProductName))
                 ModelState.AddModelError("ProductName", "Tên mặt hàng không được để trống");
-
             if (!ModelState.IsValid)
             {
                 // BẮT BUỘC load lại dropdown + dữ liệu phụ    
@@ -163,14 +151,12 @@ namespace SV22T1080075.Admin.Controllers
                 ViewBag.Suppliers = new SelectList(ProductDataService.ListSuppliers(), "SupplierID", "SupplierName");
                 ViewBag.Photos = ProductDataService.ListPhotos(model.ProductID);
                 ViewBag.Attributes = ProductDataService.ListAttributes(model.ProductID);
-
                 return View("Edit", model);
             }
-
             // Upload ảnh nếu có
             if (model.UpLoadFile != null)
             {
-                string fileName = $"{DateTime.Now.Ticks}_{model.UpLoadFile.FileName}";
+                string fileName = $"{model.UpLoadFile.FileName}";
                 string filePath = Path.Combine(ApplicationContext.WWWRootPath, @"images\products", fileName);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
@@ -178,7 +164,6 @@ namespace SV22T1080075.Admin.Controllers
                 }
                 model.Photo = fileName;
             }
-
             // Convert sang Product để lưu
             Product data = new Product()
             {
@@ -192,12 +177,10 @@ namespace SV22T1080075.Admin.Controllers
                 Photo = model.Photo,
                 IsSelling = model.IsSelling
             };
-
             if (data.ProductID == 0)
                 await ProductDataService.ProductDB.AddAsync(data);
             else
                 await ProductDataService.ProductDB.UpdateAsync(data);
-
             return RedirectToAction("Index");
         }
 
@@ -211,7 +194,6 @@ namespace SV22T1080075.Admin.Controllers
             var product = await ProductDataService.ProductDB.GetAsync(id);
             if (product == null)
                 return RedirectToAction("Index");
-
             // Tạo model Edit từ Product
             var model = new ProductEditModel()
             {
@@ -225,15 +207,12 @@ namespace SV22T1080075.Admin.Controllers
                 Photo = product.Photo,
                 IsSelling = product.IsSelling
             };
-
             // Dropdown
             ViewBag.Categories = new SelectList(ProductDataService.ListCategories(), "CategoryID", "CategoryName");
             ViewBag.Suppliers = new SelectList(ProductDataService.ListSuppliers(), "SupplierID", "SupplierName");
-
             // Ảnh + thuộc tính
             ViewBag.Photos = ProductDataService.ListPhotos(id);
             ViewBag.Attributes = ProductDataService.ListAttributes(id);
-
             return View(model);
         }
         /// <summary>
@@ -245,14 +224,11 @@ namespace SV22T1080075.Admin.Controllers
         {
             if (id <= 0)
                 return RedirectToAction("Index");
-
             var data = await ProductDataService.ProductDB.GetAsync(id);
             if (data == null)
                 return RedirectToAction("Index");
-
             if (await ProductDataService.ProductDB.InUsedAsync(id))
                 return RedirectToAction("Index");
-
             return View(data);
         }
         /// <summary>
@@ -265,7 +241,6 @@ namespace SV22T1080075.Admin.Controllers
         {
             if (await ProductDataService.ProductDB.InUsedAsync(id))
                 return RedirectToAction("Index");
-
             await ProductDataService.ProductDB.DeleteAsync(id);
             return RedirectToAction("Index");
         }

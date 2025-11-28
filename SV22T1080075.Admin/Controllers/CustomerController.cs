@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SV22T1080075.Admin.Models;
 using SV22T1080075.BusinessLayers;
 using SV22T1080075.DataLayers;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace SV22T1080075.Admin.Controllers
 {
+    [Authorize]
     public class CustomerController : Controller
     {
         private const int PAGE_SIZE = 20;
@@ -77,6 +79,8 @@ namespace SV22T1080075.Admin.Controllers
                 //Kiểm tra dữ liệu đầu vào
                 if (string.IsNullOrWhiteSpace(data.CustomerName))
                     ModelState.AddModelError("CustomerName", "Tên khách hàng không được để trống");
+
+                /*
                 if (string.IsNullOrWhiteSpace(data.ContactName))
                     ModelState.AddModelError("ContactName", "Tên liên hệ không được để trống");
                 if (string.IsNullOrWhiteSpace(data.Phone))
@@ -87,6 +91,7 @@ namespace SV22T1080075.Admin.Controllers
                     ModelState.AddModelError("Address", "Địa chỉ không được để trống");
                 if (string.IsNullOrWhiteSpace(data.Province))
                     ModelState.AddModelError("Province", "Tỉnh/Thành phố không được để trống");
+                */
 
                 //Thông báo lỗi và yêu cầu nhập lại nếu có trường hợp dữ liệu không hợp lệ
                 if (!ModelState.IsValid)

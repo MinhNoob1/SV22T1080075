@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SV22T1080075.Admin.Models;
 using SV22T1080075.BusinessLayers;
 using SV22T1080075.DomainModels;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SV22T1080075.Admin.Controllers
 {
+    [Authorize(Roles = $"{WebUserRoles.Employee}")]
     public class EmployeeController : Controller
     {
         private const string EMPLOYEE_SEARCH_CONDITION = "EmployeeSearchCondition";
@@ -61,7 +63,6 @@ namespace SV22T1080075.Admin.Controllers
                 Photo = "nophoto.png"
             });
         }
-
         public async Task<IActionResult> Edit(int id)
         {
             ViewBag.Title = "Cập nhật thông tin nhân viên";
@@ -102,7 +103,8 @@ namespace SV22T1080075.Admin.Controllers
             //Nếu có ảnh thì upload ảnh lên và lấy tên file ảnh mới upload cho Photo
             if (model.UpLoadFile != null)
             {
-                string fileName = $"{DateTime.Now.Ticks}_{model.UpLoadFile.FileName}";
+                string fileName = $"{model.UpLoadFile.FileName}";
+                //dùng nếu không muốn ảnh bị trùng: string fileName = $"{DateTime.Now}_{model.UpLoadFile.FileName}";
                 string filePath = Path.Combine(
                     ApplicationContext.WWWRootPath,
                     @"images\employees",

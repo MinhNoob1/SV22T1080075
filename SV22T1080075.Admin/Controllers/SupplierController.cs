@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SV22T1080075.Admin.Models;
 using SV22T1080075.BusinessLayers;
 using SV22T1080075.DomainModels;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace SV22T1080075.Admin.Controllers
 {
+    [Authorize]
     public class SupplierController : Controller
     {
         private const int PAGE_SIZE = 10;
@@ -69,6 +71,8 @@ namespace SV22T1080075.Admin.Controllers
                 //Kiểm tra dữ liệu đầu vào
                 if (string.IsNullOrWhiteSpace(data.SupplierName))
                     ModelState.AddModelError("SupplierName", "Tên nhà cung cấp không được để trống");
+
+                /*
                 if (string.IsNullOrWhiteSpace(data.ContantName))
                     ModelState.AddModelError("ContantName", "Tên liên hệ không được để trống");
                 if (string.IsNullOrWhiteSpace(data.Phone))
@@ -79,6 +83,7 @@ namespace SV22T1080075.Admin.Controllers
                     ModelState.AddModelError("Andress", "Địa chỉ không được để trống");
                 if (string.IsNullOrWhiteSpace(data.Province))
                     ModelState.AddModelError("Province", "Tỉnh/Thành phố không được để trống");
+                */
 
                 //Thông báo lỗi và yêu cầu nhập lại nếu có trường hợp dữ liệu không hợp lệ
                 if (!ModelState.IsValid)

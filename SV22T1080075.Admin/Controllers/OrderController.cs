@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SV22T1080075.BusinessLayers;
 using System.Threading.Tasks;
 
 namespace SV22T1080075.Admin.Controllers
 {
+    [Authorize]
     public class OrderController : Controller
     {
         private const int PAGE_SIZE = 20;

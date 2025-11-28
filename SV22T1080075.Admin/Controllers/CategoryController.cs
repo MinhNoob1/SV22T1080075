@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SV22T1080075.Admin.Models;
 using SV22T1080075.BusinessLayers;
 using SV22T1080075.DomainModels;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SV22T1080075.Admin.Controllers
 {
+    [Authorize]
     public class CategoryController : Controller
     {
         private const int PAGE_SIZE = 10;
