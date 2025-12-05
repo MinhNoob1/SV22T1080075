@@ -66,7 +66,7 @@ namespace SV22T1080075.DataLayers
             return await connection.QueryAsync<Product>(sql: sql, param: parameters, commandType: System.Data.CommandType.Text);
         }
         /// <summary>
-        /// 
+        /// Đếm số mặt hàng
         /// </summary>
         /// <param name="searchValue"></param>
         /// <param name="categoryID"></param>
