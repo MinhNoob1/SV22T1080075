@@ -18,7 +18,25 @@ namespace SV22T1080075.Admin
                 list.Add(new SelectListItem()
                 {
                     Value = item.ProvinceName.ToString(),
-                    Text = item.ProvinceName
+                    Text = item.ProvinceName,
+                });
+            }
+            return list;
+        }
+        /// <summary>
+        /// Danh sách các khách hàng
+        /// </summary>
+        /// <returns></returns>
+        public async static Task<IEnumerable<SelectListItem>> Customers()
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+            list.Add(new SelectListItem() { Value = "", Text = "-- Khách hàng --" });
+            foreach (var item in await CommonDataServices.CustomerDB.ListAsync())
+            {
+                list.Add(new SelectListItem()
+                {
+                    Value = item.CustomerName.ToString(),
+                    Text = item.CustomerName,
                 });
             }
             return list;

@@ -67,7 +67,7 @@
 
 <script>
     $(document).ready(function () {
-        $(",formAddToCart").submit(function (e) {
+        $(".formAddToCart").submit(function (e) {
             e.preventDefault();
 
             var url = $(this).prop("action");
@@ -79,7 +79,12 @@
                 method: method,
                 data: submitData,
                 success: function (data) {
-                    $("cart").html(data);
+                    if (data.code === 1) {
+                        getCart();
+                    }
+                    else {
+                        alart(data.message);
+                    }
                 }
             });
         })

@@ -24,11 +24,19 @@
                 <td class="text-center">@(++i)</td>
                 <td>@item.ProductName</td>
                 <td class="text-center">@item.Unit</td>
-                <td class="text-center">@item.Quantity</td>
+                <td class="text-center">
+                    <a href="javascript:;" class="btn btn-xs btn-info" onclick="updateCartQuantity(@item.ProductID, -1)">
+                        <i class="fa fa-minus-circle"></i>
+                    </a>
+                    @item.Quantity
+                    <a href="javascript:;" class="btn btn-xs btn-info" onclick="updateCartQuantity(@item.ProductID, 1)">
+                        <i class="fa fa-plus-circle"></i>
+                    </a>
+                </td>
                 <td class="text-right">@item.SalePrice</td>
                 <td class="text-right">@item.TotalPrice</td>
                 <td class="text-right">
-                    <a href="~/Order/RemoveFromCart/123" class="btn btn-xs btn-danger">
+                    <a href="javascript:;" class="btn btn-xs btn-danger" onclick="removeFromCart(@item.ProductID)">
                         <i class="fa fa-minus"></i>
                     </a>
                 </td>

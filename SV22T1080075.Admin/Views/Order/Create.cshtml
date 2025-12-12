@@ -52,40 +52,40 @@
             </div>
 
             <div class="text-right">
-                <a href="~/Order/ClearCart" class="btn btn-sm btn-danger" onclick="return confirm('Có muốn xóa giỏ hàng không?')">
+                <a href="~/Order/ClearCart" class="btn btn-sm btn-danger" onclick="clearCart(); return false;">
                     <i class="fa fa-trash"></i> Xóa giỏ hàng
                 </a>
             </div>
 
             <!-- Nhập khách hàng, nhân viên phụ trách và khởi tạo đơn hàng -->
-            <form action="~/Order/Init" method="post" class="form-horizontal">
+            <form action="~/Order/Init" id="formOrderInit" method="post" class="form-horizontal">
                 <h4>Thông tin về khách hàng và địa chỉ giao hàng</h4>
                 <div class="form-group">
                     <label class="control-label col-sm-2">Khách hàng:</label>
                     <div class="col-sm-10">
-                        <select class="form-control" name="customerID">
-                            <option value="0">-- Chọn khách hàng --</option>
-                            <option value="1">Trần Nguyên Phong</option>
-                            <option value="2">Nguyễn Hoàng Hà</option>
-                            <option value="3">Nguyễn Ngọc Thủy</option>
+                        <select 
+                            class="form-control" 
+                            name="customerID" 
+                            asp-items="await SelectListHelper.Customers()" 
+                            onchange="getCustomerInfo(this)">
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2">Tỉnh/thành:</label>
                     <div class="col-sm-10">
-                        <select class="form-control select2" name="deliveryProvince">
-                            <option value="0">-- Chọn tỉnh/thành --</option>
-                            <option value="Thừa Thiên Huế">Thừa Thiên Huế</option>
-                            <option value="Đà Nẵng">Đà Nẵng</option>
-                            <option value="Quảng Nam">Quảng Nam</option>
+                        <select 
+                            class="form-control select2" 
+                            id="province"
+                            name="deliveryProvince" 
+                            asp-items="await SelectListHelper.Provinces()">
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2">Địa chỉ nhận hàng:</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="deliveryAddress" />
+                        <input type="text" class="form-control" name="deliveryAddress" id="address"/>
                     </div>
                 </div>
                 <div class="form-group">
@@ -109,8 +109,29 @@
             });
             searchProducts(1);
             getCart();
-        });
 
+            $("#formOrderInit").submit(function (e) {
+                e.preventDefault();
+                var url = $(this).prop("action");
+                var method = $(this).prop("method");
+                var submitData = $(this).serializeArray();
+
+                $.ajax({
+                    url: url,
+                    method: method,
+                    data: submitData,
+                    success: function (respone) {
+                        if (respone.code === 1) {
+                            // TODO: Chuyển về trang Quản lý đơn hàng
+                            location.href = `/Order/Details/${respone.data}`
+                        }
+                        else {
+                            alert(code.message);
+                        }
+                    }
+                });
+            });
+        });
         // Thực hiện lời gọi ajax để tìm kiếm mặt hàng và hiển thị kết quả
         function searchProducts(page) {
             var url = $("#formSearchProducts").prop("action");
@@ -135,6 +156,63 @@
                 method: "get",
                 success: function (data) {
                     $("#cart").html(data);
+                }
+            });
+        }
+        // Xóa 1 mặt hàng có mã là id trong giỏ hàng
+        function removeFromCart(id) {
+            $.ajax({
+                url: `/Order/RemoveFromCart/${id}`,
+                method: "post",
+                success: function (data) {
+                    if (data.code === 1) {
+                        getCart();
+                    }
+                    else {
+                        alert(data.message);
+                    }
+                }
+            });
+        }
+        // Xóa toàn bộ giỏ hàng
+        function clearCart() {
+            $.ajax({
+                url: "/Order/ClearCart/",
+                method: "post",
+                success: function (data) {
+                    if (data.code === 1) {
+                        getCart();
+                    }
+                    else {
+                        alert(data.message);
+                    }
+                }
+            });
+        }
+        // Cập nhật lại số lượng (tăng/giảm) hàng trong giỏ
+        function updateCartQuantity(id, quantity) {
+            $.ajax({
+                url: `/Order/UpdateCartQuantity/${id}?quantity=${quantity}`,
+                method: "post",
+                success: function (data) {
+                    if (data.code === 1) {
+                        getCart();
+                    }
+                    else {
+                        alert(data.message);
+                    }
+                }
+            });
+        }
+        // Lấy thông tin khách hàng được chọn
+        function getCustomerInfo(obj) {
+            var customerID = $(obj).val();
+            $.ajax({
+                url: `/api/customer/${customerID}`,
+                method: "get",
+                success: function (data) {
+                    $('#province').val(data.province);
+                    $('#address').val(data.address);
                 }
             });
         }
