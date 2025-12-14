@@ -9,3 +9,4 @@ Tạo ứng dụng ASP.NET Core MVC, đặt ứng dụng là SVMaSinhVien.Shop (
 8. Đặt hàng.
 9. Theo dõi trạng thái xử lý của đơn hàng.
 10. Theo dõi lịch sử mua hàng.
+(Shop phải theo một chủ đề nào đó: vd bán điện thoại, bán quần áo, bán đồ gia dụng, ... )
