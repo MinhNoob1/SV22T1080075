@@ -146,6 +146,16 @@
                 data: submitData,
                 success: function (data) {
                     $(container).html(data);
+                    $('.inputmask-numeric').inputmask({
+                        alias: "numeric",
+                        groupSeparator: ",",      // Dấu phân cách hàng nghìn
+                        radixPoint: ",",          // Dấu thập phân
+                        autoGroup: true,          // Tự động nhóm số
+                        //digitsOptional: true,     // Phần thập phân là tùy chọn
+                        digits: 0,                // Không cho nhập số lẻ
+                        rightAlign: false,        // Không căn phải
+                        removeMaskOnSubmit: true  // Khi submit form chỉ gửi số
+                    });
                 }
             });
         }

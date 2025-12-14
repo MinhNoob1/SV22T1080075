@@ -4,18 +4,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>HCM SHOP</title>
-    <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <!-- Bootstrap 3.3.7 -->
     <link rel="stylesheet" href="~/themes/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="~/themes/bower_components/font-awesome/css/font-awesome.min.css">
-    <!-- Ionicons -->
     <link rel="stylesheet" href="~/themes/bower_components/Ionicons/css/ionicons.min.css">
-    <!-- Theme style -->
+    <link rel="stylesheet" href="~/themes/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="~/themes/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="~/themes/bower_components/select2/dist/css/select2.min.css">
     <link rel="stylesheet" href="~/themes/dist/css/AdminLTE.min.css">
-    <!-- AdminLTE Skins. Choose a skin from the css/skins
-         folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="~/themes/dist/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="~/css/site.css">
     @await RenderSectionAsync("styles", false);
@@ -31,7 +27,6 @@
     *@
 </head>
 <body class="hold-transition fixed skin-blue sidebar-mini">
-    <!-- Site wrapper -->
     <div class="wrapper">
         <!-- Header. -->
         @{
@@ -74,6 +69,11 @@
     <script src="~/themes/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
     <!-- FastClick -->
     <script src="~/themes/bower_components/fastclick/lib/fastclick.js"></script>
+    <script src="~/themes/bower_components/moment/min/moment.min.js"></script>
+    <script src="~/themes/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="~/themes/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/themes/bower_components/select2/dist/js/select2.min.js"></script>
+    <script src="~/themes/bower_components/inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="~/themes/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
@@ -81,6 +81,26 @@
     <script>
         $(document).ready(function () {
             $('.sidebar-menu').tree()
+            $('.select2').select2();
+            $('.data-picker').datapicker({
+                autoclose: true,
+                format: "dd/mm/yyyy"
+            });
+            $('.datarange-picker').datarangepicker({
+                locale: {
+                    format: "DD/MM/YYYY"
+                }
+            });
+            $('.inputmask-numeric').inputmask({
+                alias: "numeric",
+                groupSeparator: ",",      // Dấu phân cách hàng nghìn
+                radixPoint: ",",          // Dấu thập phân
+                autoGroup: true,          // Tự động nhóm số
+                //digitsOptional: true,     // Phần thập phân là tùy chọn
+                digits: 0,                // Không cho nhập số lẻ
+                rightAlign: false,        // Không căn phải
+                removeMaskOnSubmit: true  // Khi submit form chỉ gửi số
+            });
         })
     </script>
     @await RenderSectionAsync("scripts", false);

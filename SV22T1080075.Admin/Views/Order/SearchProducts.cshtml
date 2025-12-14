@@ -30,7 +30,7 @@
                         <div class="row">
                             <div class="col-md-7">
                                 <label>Giá bán:</label>
-                                <input class="form-control" type="text" value="@item.Price" name="SalePrice" />
+                                <input class="form-control" inputmask-numeric type="text" value="@string.Format("{0:N0}", item.Price)" name="SalePrice" />
                             </div>
                             <div class="col-md-5">
                                 <label>Số lượng:</label>

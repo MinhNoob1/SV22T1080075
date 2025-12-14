@@ -104,17 +104,17 @@ namespace SV22T1080075.DomainModels
             {
                 switch (Status)
                 {
-                    case Constants.ORDER_INIT:
+                    case OrderStatus.ORDER_INIT:
                         return "Đơn hàng mới. Đang chờ duyệt";
-                    case Constants.ORDER_ACCEPTED:
+                    case OrderStatus.ORDER_ACCEPTED:
                         return "Đơn đã chấp nhận. Đang chờ chuyển hàng";
-                    case Constants.ORDER_SHIPPING:
+                    case OrderStatus.ORDER_SHIPPING:
                         return "Đơn hàng đang được giao";
-                    case Constants.ORDER_FINISHED:
+                    case OrderStatus.ORDER_FINISHED:
                         return "Đơn hàng đã hoàn tất";
-                    case Constants.ORDER_CANCEL:
+                    case OrderStatus.ORDER_CANCEL:
                         return "Đơn hàng đã bị hủy";
-                    case Constants.ORDER_REJECTED:
+                    case OrderStatus.ORDER_REJECTED:
                         return "Đơn hàng bị từ chối";
                     default:
                         return "";

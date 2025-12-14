@@ -12,10 +12,21 @@ namespace SV22T1080075.Admin.Controllers
     {
         private const int PAGE_SIZE = 5;
         private const string PRODUCT_SEARCH_FOR_SALE = "ProductSearchSale";
+        private const string ORDER_SEARCH_CONDITION = "OrderSearchCondition";
         private const string CART = "Cart";
-        public IActionResult Index(int page = 1, string searchValue = "")
+        public IActionResult Index(string searchValue = "")
         {
-            return View();
+            var condition = ApplicationContext.GetSessionData<OrderSearchCondition>(ORDER_SEARCH_CONDITION);
+            condition ??= new OrderSearchCondition()
+            {
+                Page = 1,
+                PageSize = PAGE_SIZE,
+                SearchValue = searchValue,
+                Status = 0,
+                DateRange = "",
+
+            };
+            return View(condition);
         }
         public IActionResult Create()
         {

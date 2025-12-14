@@ -2,36 +2,23 @@
 @{
     ViewBag.Title = "Quản lý mặt hàng";
 }
+
 <div class="box box-primary">
     <div class="box-body">
-
         <!-- Form tìm kiếm -->
         <form id="formSearch" action="~/Product/Search" method="get" data-result="#searchResult">
 
             <input type="hidden" asp-for="PageSize" />
 
             <div class="row">
-
                 <div class="col-sm-3">
                     <label>Loại hàng:</label>
-                    <select asp-for="CategoryID" class="form-control">
-                        <option value="0">-- Chọn loại hàng --</option>
-                        @foreach (var c in SV22T1080075.BusinessLayers.CommonDataServices.CategoryDB.ListAsync().Result)
-                        {
-                            <option value="@c.CategoryID">@c.CategoryName</option>
-                        }
-                    </select>
+                    <select asp-items="await SelectListHelper.Category()" class="form-control"></select>
                 </div>
 
                 <div class="col-sm-3">
                     <label>Nhà cung cấp:</label>
-                    <select asp-for="SupplierID" class="form-control">
-                        <option value="0">-- Chọn nhà cung cấp --</option>
-                        @foreach (var s in SV22T1080075.BusinessLayers.CommonDataServices.SupplierDB.ListAsync().Result)
-                        {
-                            <option value="@s.SupplierID">@s.SupplierName</option>
-                        }
-                    </select>
+                    <select asp-items="await SelectListHelper.Supplier()" class="form-control"></select>
                 </div>
 
                 <div class="col-sm-1">

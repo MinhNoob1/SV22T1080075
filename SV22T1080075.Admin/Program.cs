@@ -47,6 +47,7 @@ var cultureInfo = new System.Globalization.CultureInfo("vi-VN");
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
+
 //Khởi tạo cấu hình cho Application Context
 ApplicationContext.Configure(
     httpContextAccessor: app.Services.GetRequiredService<IHttpContextAccessor>(),

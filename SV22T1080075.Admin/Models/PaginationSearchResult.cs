@@ -1,13 +1,13 @@
 ﻿namespace SV22T1080075.Admin.Models
 {
     /// <summary>
-    /// Biểu diễn cho dữ liệu đầu ra khi tìm kiếm dưới dạng phân trang (ViewModel)
+    /// ViewModel phân trang dùng chung
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class PaginationSearchResult<T> where T : class
     {
         /// <summary>
-        /// Trang được hiển thị
+        /// Trang hiện tại
         /// </summary>
         public int Page { get; set; }
         /// <summary>
@@ -15,30 +15,29 @@
         /// </summary>
         public int PageSize { get; set; }
         /// <summary>
-        /// Giá trị tìm kiếm
+        /// Từ khóa tìm kiếm
         /// </summary>
         public string SearchValue { get; set; } = "";
         /// <summary>
-        /// Số dòng dữ liệu tìm được
+        /// Tổng số dòng tìm được
         /// </summary>
         public int RowCount { get; set; }
         /// <summary>
-        /// Số trang
+        /// Tổng số trang
         /// </summary>
         public int PageCount
         {
             get
             {
-                if (PageSize == 0) return 1;
-                if (RowCount <= 0) return 1;
-                int page = RowCount / PageSize;
-                if (RowCount % PageSize > 0) page += 1;
-                return page;
+                if (PageSize <= 0 || RowCount <= 0) return 1;
+                int pages = RowCount / PageSize;
+                if (RowCount % PageSize > 0) pages++;
+                return pages;
             }
         }
         /// <summary>
-        /// Danh sách dữ liệu truy vấn được
+        /// Dữ liệu trả về
         /// </summary>
-        public required IEnumerable<T> Data { get; set;}
+        public required IEnumerable<T> Data { get; set; }
     }
 }
